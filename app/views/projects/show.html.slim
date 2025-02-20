@@ -1,0 +1,30 @@
+.container.mt-4
+  .card
+    .card-body
+      h1.card-title = @project.name
+      p.card-text 
+        strong Status: 
+        span.badge-primary.ml-2 = @project.status
+
+  .mt-4
+    h2 Change Status
+    = form_with model: @project, method: :patch, class: "form-inline" do |f|
+      .form-group.mr-2
+        = f.select :status, Project::STATUSES, {}, { class: "form-control" }
+      = f.submit "Update", class: "btn btn-primary"
+
+  .mt-4
+    h2 Comments
+    .list-group
+      - @project.comments.each do |comment|
+        .list-group-item
+          strong = comment.user.name
+          p.mb-0 = comment.content
+
+  .mt-4
+    h3 Add Comment
+    = form_with model: [@project, Comment.new], class: "form-group" do |f|
+      = f.hidden_field :user_id, value: 1
+      .form-group
+        = f.text_area :content, class: "form-control", placeholder: "Write a comment..."
+      = f.submit "Comment", class: "btn btn-success mt-2"

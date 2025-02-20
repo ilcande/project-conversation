@@ -13,6 +13,10 @@ class CommentsController < ApplicationController
 
   private
 
+  def current_user
+    User.find(params[:comment][:user_id])
+  end
+
   def comment_params
     params.require(:comment).permit(:content)
   end

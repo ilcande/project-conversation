@@ -1,0 +1,13 @@
+.container.mt-5
+  h1.text-center.mb-4.text-primary Projects
+
+  .row
+    - @projects.each do |project|
+      .col-md-6.col-lg-4.mb-4
+        .card.shadow-sm
+          .card-body
+            h5.card-title = project.name
+            p.card-text 
+              strong Status: 
+              span.badge-info.ml-2 = project.status
+            = link_to "View Details", project_path(project), class: "btn btn-outline-primary btn-sm mt-2"
