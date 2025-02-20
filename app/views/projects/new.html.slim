@@ -1,0 +1,23 @@
+.container.mt-5
+  h1.text-center.mb-4.text-primary Create New Project
+
+  - if @project.errors.any?
+    .alert.alert-danger
+      h4 Errors
+      ul
+        - @project.errors.full_messages.each do |msg|
+          li= msg
+
+  = form_with model: @project, url: projects_path, method: :post, local: true do |f|
+    .form-group
+      = f.label :name, "Project Name"
+      = f.text_field :name, class: "form-control"
+    
+    .form-group
+      = f.label :status, "Status"
+      = f.select :status, Project::STATUSES, {}, { class: "form-control" }
+    
+    .form-group
+      = f.submit "Create Project", class: "btn btn-success mt-3"
+
+  = link_to "Back to Projects", projects_path, class: "btn btn-secondary mt-3"

@@ -6,7 +6,12 @@
         strong Status: 
         span.badge-primary.ml-2 = @project.status
 
-  .mt-4
+  p.text-muted
+    strong Creator: 
+    = @project.user.name
+
+  - if @project.user == current_user
+    .mt-4
     h2 Change Status
     = form_with model: @project, method: :patch, class: "form-inline" do |f|
       .form-group.mr-2
@@ -14,17 +19,22 @@
       = f.submit "Update", class: "btn btn-primary"
 
   .mt-4
-    h2 Comments
-    .list-group
-      - @project.comments.each do |comment|
-        .list-group-item
-          strong = comment.user.name
-          p.mb-0 = comment.content
+  h2 Comments
+  .list-group
+    - @project.comments.each do |comment|
+      .list-group-item
+        strong = comment.user.name
+        p.mb-0 = comment.content
+        - if comment.user == current_user
+          = button_to "Delete", project_comment_path(@project, comment), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm ml-2"
 
   .mt-4
     h3 Add Comment
     = form_with model: [@project, Comment.new], class: "form-group" do |f|
-      = f.hidden_field :user_id, value: 1
+      = f.hidden_field :user_id, value: current_user.id
       .form-group
         = f.text_area :content, class: "form-control", placeholder: "Write a comment..."
       = f.submit "Comment", class: "btn btn-success mt-2"
+
+  .mt-4
+    = link_to "Back to Projects", projects_path, class: "btn btn-secondary"

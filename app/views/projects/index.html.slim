@@ -1,8 +1,10 @@
 .container.mt-5
   h1.text-center.mb-4.text-primary Projects
 
+  .mt-4
+  h2 Your Projects
   .row
-    - @projects.each do |project|
+    - @projects.where(user: current_user).each do |project|
       .col-md-6.col-lg-4.mb-4
         .card.shadow-sm
           .card-body
@@ -10,4 +12,30 @@
             p.card-text 
               strong Status: 
               span.badge-info.ml-2 = project.status
+            p.text-muted
+              strong Creator: 
+              = project.user.name
+            = link_to "View Details", project_path(project), class: "btn btn-outline-primary btn-sm mt-2"
+
+  .mt-4
+  = link_to "Create New Project", new_project_path, class: "btn btn-primary"
+
+  .mt-4
+  = button_to destroy_user_session_path, method: :delete, class: "btn btn-danger" do
+    | Logout
+
+  .mt-4
+  h2 Other Users' Projects
+  .row
+    - @projects.where.not(user: current_user).each do |project|
+      .col-md-6.col-lg-4.mb-4
+        .card.shadow-sm
+          .card-body
+            h5.card-title = project.name
+            p.card-text 
+              strong Status: 
+              span.badge-info.ml-2 = project.status
+            p.text-muted
+              strong Creator: 
+              = project.user.name
             = link_to "View Details", project_path(project), class: "btn btn-outline-primary btn-sm mt-2"

@@ -6,9 +6,12 @@ Project.destroy_all
 Comment.destroy_all
 
 # Create Users
-users = Array.new(5) do
+users = Array.new(5) do |i|
   User.create!(
-    name: Faker::Name.name
+    name: Faker::Name.name,
+    email: "user#{i + 1}@example.com",
+    password: "password",
+    password_confirmation: "password"
   )
 end
 
